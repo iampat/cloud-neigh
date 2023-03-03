@@ -5,6 +5,7 @@ The single machine design is highly influnced by [scann](https://github.com/goog
 
 
 # Run & Build
+Currently, you need to have `hdf5` installed on your machine.       
 ```
 go run cmd/example.go
 ```
