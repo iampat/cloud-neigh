@@ -1,7 +1,4 @@
 .vscode
 data
 *~
-bazel-bin/*
-bazel-cloudy-neigh/*
-bazel-out/*
-bazel-testlogs/*
+bazel-*
