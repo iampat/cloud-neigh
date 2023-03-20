@@ -1,5 +1,4 @@
-name: cicd
-
+name: workflow
 on:
   push:
     branches: [ "main" ]
@@ -7,7 +6,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  go-toolchain:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -17,10 +16,24 @@ jobs:
       with:
         go-version: 1.20
     - name: Build
-      run: bazel build "..."
+      run: go build -v ./...
 
     - name: Test
       run: go test -v ./...
 
     - name: Benchmark
       run: go test --bench=. --benchtime=10s -cpu 1 ./...
+
+  bazel-toolchain:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Build
+      run: bazel build ...
+
+    - name: Test
+      run: bazel test ...
+
+    - name: Benchmark 
+      run: bazel test --test_output=streamed --test_arg=-test.v --test_arg=-test.bench=. --test_arg=-test.cpu=1  ...
