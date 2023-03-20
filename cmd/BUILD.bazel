@@ -5,7 +5,6 @@ go_library(
     srcs = ["example.go"],
     importpath = "https:/github.com/iampat/cloudy-neigh/cmd",
     visibility = ["//visibility:private"],
-    deps = ["@org_gonum_v1_hdf5//:go_default_library"],
 )
 
 go_binary(
