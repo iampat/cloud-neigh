@@ -1,4 +1,4 @@
-package bench_test
+package benchmark_test
 
 import "testing"
 
@@ -19,7 +19,8 @@ func benchmarkFib(i int, b *testing.B) {
 	result = r
 }
 
-func BenchmarkFib10(b *testing.B)  { benchmarkFib(10, b) }
+func BenchmarkFib10(b *testing.B) { benchmarkFib(10, b) }
+
 // func BenchmarkFib2(b *testing.B)  { benchmarkFib(2, b) }
 // func BenchmarkFib3(b *testing.B)  { benchmarkFib(3, b) }
 // func BenchmarkFib10(b *testing.B) { benchmarkFib(10, b) }
