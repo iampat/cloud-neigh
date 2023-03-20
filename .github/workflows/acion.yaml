@@ -21,3 +21,6 @@ jobs:
 
     - name: Test
       run: go test -v ./...
+
+    - name: Benchmark
+      run: go test --bench=. --benchtime=10s -cpu 1 ./...
