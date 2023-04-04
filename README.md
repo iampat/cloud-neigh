@@ -1,6 +1,8 @@
 # cloudy-neigh
 Cloudy with a Chance of Neighbors 
 
+I decided to change the direction of this project, so ignore the rest of this document.
+
 The single machine design is highly influnced by [scann](https://github.com/google-research/google-research/blob/master/scann).
 
 
