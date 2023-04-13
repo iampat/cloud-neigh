@@ -14,7 +14,7 @@ import (
 )
 
 const maxLineSize int = 1000 * 1000 // Reserve 1MB
-const vebosity int = 100
+const vebosity int = 1000
 const maxNumberOfItems = 10 * 1000 * 1000
 
 const lshNumberOfBuckets = 20 // 2^20 buckets
@@ -32,7 +32,7 @@ func main() {
 	defer func(tStart time.Time) {
 		fmt.Println("Elapsed Time:", time.Since(tStart))
 	}(time.Now())
-	var inputJson = flag.String("input_json", "/Users/ali/src/misc/dash_answering/notebooks/data/99p/dataset.json", "where to load the data")
+	var inputJson = flag.String("input_json", "/Users/ali/src/misc/dash_answering/notebooks/data/99p/dataset_embedding.json", "where to load the data")
 	var outputIndex = flag.String("output_index", "/Users/ali/workspace/data/bluge/index/99p/", "where to write the data")
 	flag.Parse()
 	// Read data file
@@ -79,18 +79,29 @@ func main() {
 		data := fileScanner.Bytes()
 		inputDoc := &document.Document{}
 		// inputDoc.LshHash = dummyHash(rand.Uint64(), lshNumberOfBuckets)
+
 		json.Unmarshal(data, inputDoc)
+		text_embedding, err := json.Marshal(inputDoc.TextEmbedding)
+		if err != nil {
+			log.Fatalln(err)
+		}
+		title_embedding, err := json.Marshal(inputDoc.TitleEmbedding)
+		if err != nil {
+			log.Fatalln(err)
+		}
 		bdoc := bluge.NewDocument(inputDoc.Id).
-			AddField(bluge.NewTextField("title", inputDoc.Title).StoreValue()).
+			AddField(bluge.NewStoredOnlyField("text_embedding", text_embedding)).
+			AddField(bluge.NewStoredOnlyField("text_embedding", title_embedding)).
+			AddField(bluge.NewTextField("text_lsh_hash", inputDoc.TextLshHash).StoreValue()).
+			AddField(bluge.NewTextField("title_lsh_hash", inputDoc.TextLshHash).StoreValue()).
 			AddField(bluge.NewTextField("url", inputDoc.Url).StoreValue()).
 			AddField(bluge.NewTextField("text", inputDoc.Text).StoreValue()).
-			AddField(bluge.NewTextField("text_lsh_hash", inputDoc.TextLshHash).StoreValue()).
-			AddField(bluge.NewTextField("title_lsh_hash", inputDoc.TextLshHash).StoreValue())
+			AddField(bluge.NewTextField("title", inputDoc.Title).StoreValue())
 		batch.Update(bdoc.ID(), bdoc)
 
 		counter++
 		if counter < 5 {
-			log.Println("sample doc:", inputDoc.Id, inputDoc.Title, inputDoc.Url)
+			log.Println("sample doc:", inputDoc.Title)
 		}
 		if counter%vebosity == 0 {
 			err = indexWriter.Batch(batch)
