@@ -17,17 +17,17 @@ import (
 	"github.com/fatih/color"
 )
 
-const embeddingDim = 1536
-const lshSize = 10
-const maxNumberOfItems = 10
-
 var yellow = color.New(color.FgYellow).SprintFunc()
 var red = color.New(color.FgRed).SprintFunc()
 var green = color.New(color.FgGreen).SprintFunc()
 var magenta = color.New(color.FgMagenta).SprintFunc()
 
+var indexDir = flag.String("index", "", "where to load the data from")
+var lshSize = flag.Int("lsh_size", 10, "number of hash functions in LSH.")
+var maxNumberOfItems = flag.Int("max_number_of_items", 10, "number of hash functions in LSH.")
+
 func runQuery(q bluge.Query, indexReader *bluge.Reader) string {
-	req := bluge.NewTopNSearch(maxNumberOfItems, q)
+	req := bluge.NewTopNSearch(*maxNumberOfItems, q)
 	// req.SortByCustom()
 
 	dmi, err := indexReader.Search(context.Background(), req)
@@ -95,7 +95,7 @@ func RunVectorSearch(query string, indexReader *bluge.Reader) {
 	}(&tStart, &tEmbeddingDone)
 	fmt.Println(green("------------------------- Vector Search Started ---------------------------"))
 	client := openai.NewClient(os.Getenv("OPENAI_API_KEY"))
-	lsh := lsh.NewLSH42(lshSize, embeddingDim)
+	lsh := lsh.NewLSH42(*lshSize, client.EmbeddingDim())
 	embd, err := client.Embeddings([]string{query})
 	tEmbeddingDone = time.Now()
 	if err != nil {
@@ -119,7 +119,6 @@ func RunVectorSearch(query string, indexReader *bluge.Reader) {
 }
 
 func main() {
-	indexDir := flag.String("index", "", "where to load the data from")
 	flag.Parse()
 	cfg := bluge.DefaultConfig(*indexDir)
 	indexReader, err := bluge.OpenReader(cfg)

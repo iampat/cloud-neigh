@@ -15,15 +15,16 @@ import (
 )
 
 const maxLineSize int = 1000 * 1000 // Reserve 1MB
-const vebosity int = 1000
+const vebosity int = 10000
 const maxNumberOfItems = 10 * 1000 * 1000
+
+var inputJson = flag.String("input_json", "", "where to load the data")
+var outputIndex = flag.String("output_index", "", "where to write the index")
 
 func main() {
 	defer func(tStart time.Time) {
 		fmt.Println("Elapsed Time:", time.Since(tStart))
 	}(time.Now())
-	var inputJson = flag.String("input_json", "", "where to load the data")
-	var outputIndex = flag.String("output_index", "", "where to write the index")
 	flag.Parse()
 
 	log.Println("input json file:", *inputJson)
