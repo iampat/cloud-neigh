@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	"githu.com/iampat/cloudy-neigh/vector"
+	"github.com/iampat/cloudy-neigh/vector"
 )
 
 type client struct {
