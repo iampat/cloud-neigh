@@ -3,9 +3,10 @@ package openai
 import (
 	"bytes"
 	"encoding/json"
-	"github/iampat/cloudy-neigh/vector"
 	"log"
 	"net/http"
+
+	"githu.com/iampat/cloudy-neigh/vector"
 )
 
 type client struct {

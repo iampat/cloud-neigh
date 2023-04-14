@@ -1,0 +1,11 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "openai",
+    srcs = [
+        "embedder.go",
+        "openai.go",
+    ],
+    importpath = "https:/github.com/iampat/cloudy-neigh/openai",
+    visibility = ["//visibility:public"],
+)

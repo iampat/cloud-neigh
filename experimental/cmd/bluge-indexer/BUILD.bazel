@@ -1,0 +1,15 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "bluge-indexer_lib",
+    srcs = ["bluge-indexer.go"],
+    importpath = "https:/github.com/iampat/cloudy-neigh/experimental/cmd/bluge-indexer",
+    visibility = ["//visibility:private"],
+    deps = ["@com_github_blugelabs_bluge//:go_default_library"],
+)
+
+go_binary(
+    name = "bluge-indexer",
+    embed = [":bluge-indexer_lib"],
+    visibility = ["//visibility:public"],
+)

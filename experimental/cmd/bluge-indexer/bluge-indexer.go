@@ -5,10 +5,11 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"github/iampat/cloudy-neigh/document"
 	"log"
 	"os"
 	"time"
+
+	"github.com/iampat/cloudy-neigh/document"
 
 	"github.com/blugelabs/bluge"
 )

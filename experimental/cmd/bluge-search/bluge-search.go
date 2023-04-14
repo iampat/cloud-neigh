@@ -5,12 +5,12 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"github/iampat/cloudy-neigh/embeddings"
-	"github/iampat/cloudy-neigh/lsh"
 	"log"
 	"os"
 	"strings"
 	"time"
+
+	"github.com/iampat/cloudy-neigh/lsh"
 
 	"github.com/blugelabs/bluge"
 	"github.com/fatih/color"

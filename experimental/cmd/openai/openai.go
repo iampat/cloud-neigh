@@ -4,11 +4,12 @@ import (
 	"bufio"
 	"encoding/json"
 	"flag"
-	"github/iampat/cloudy-neigh/document"
-	"github/iampat/cloudy-neigh/lsh"
-	"github/iampat/cloudy-neigh/openai"
 	"log"
 	"os"
+
+	"github.com/iampat/cloudy-neigh/document"
+	"github.com/iampat/cloudy-neigh/lsh"
+	"github.com/iampat/cloudy-neigh/openai"
 )
 
 const maxLineSize int = 1000 * 1000 // Reserve 1MB

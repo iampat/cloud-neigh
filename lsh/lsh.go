@@ -1,8 +1,9 @@
 package lsh
 
 import (
-	"github/iampat/cloudy-neigh/vector"
 	"math/rand"
+
+	"github.com/iampat/cloudy-neigh/vector"
 )
 
 func NewLSH42(size int, dim int) *Lsh {

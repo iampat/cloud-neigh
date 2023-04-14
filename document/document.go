@@ -1,6 +1,6 @@
 package document
 
-import "github/iampat/cloudy-neigh/vector"
+import "github.com/iampat/cloudy-neigh/vector"
 
 type Document struct {
 	Id    string `json:"id"`

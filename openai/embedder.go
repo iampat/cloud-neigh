@@ -1,6 +1,6 @@
 package openai
 
-import "github/iampat/cloudy-neigh/vector"
+import "github.com/iampat/cloudy-neigh/vector"
 
 type Embedder interface {
 	Embeddings([]string) ([]*vector.Vector32, error)

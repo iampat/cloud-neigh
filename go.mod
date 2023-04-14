@@ -1,4 +1,4 @@
-module github/iampat/cloudy-neigh
+module github.com/iampat/cloudy-neigh
 
 go 1.20
 
