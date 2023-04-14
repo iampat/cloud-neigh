@@ -2,7 +2,10 @@ module github/iampat/cloudy-neigh
 
 go 1.20
 
-require github.com/blugelabs/bluge v0.2.2
+require (
+	github.com/blugelabs/bluge v0.2.2
+	github.com/fatih/color v1.15.0
+)
 
 require (
 	github.com/RoaringBitmap/roaring v0.9.4 // indirect
@@ -20,7 +23,9 @@ require (
 	github.com/dgryski/go-metro v0.0.0-20180109044635-280f6062b5bc // indirect
 	github.com/golang/snappy v0.0.1 // indirect
 	github.com/klauspost/compress v1.15.2 // indirect
+	github.com/mattn/go-colorable v0.1.13 // indirect
+	github.com/mattn/go-isatty v0.0.17 // indirect
 	github.com/mschoch/smat v0.2.0 // indirect
-	golang.org/x/sys v0.0.0-20220520151302-bc2c85ada10a // indirect
+	golang.org/x/sys v0.6.0 // indirect
 	golang.org/x/text v0.3.0 // indirect
 )

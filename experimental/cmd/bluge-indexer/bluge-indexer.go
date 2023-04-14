@@ -17,40 +17,14 @@ const maxLineSize int = 1000 * 1000 // Reserve 1MB
 const vebosity int = 1000
 const maxNumberOfItems = 10 * 1000 * 1000
 
-const lshNumberOfBuckets = 20 // 2^20 buckets
-const maxLshNumberOfBuckets = 64
-const hashPattern = "%064b"
-
-func dummyHash(num uint64, numberOfBuckets int) string {
-	if numberOfBuckets > maxLshNumberOfBuckets {
-		log.Panicf("numberOfBuckets (%d) > maxLshNumberOfBuckets(%d)", numberOfBuckets, maxLshNumberOfBuckets)
-	}
-	num = num % (uint64(1) << numberOfBuckets)
-	return fmt.Sprintf(hashPattern, num)
-}
 func main() {
 	defer func(tStart time.Time) {
 		fmt.Println("Elapsed Time:", time.Since(tStart))
 	}(time.Now())
-	var inputJson = flag.String("input_json", "/Users/ali/src/misc/dash_answering/notebooks/data/99p/dataset_embedding.json", "where to load the data")
-	var outputIndex = flag.String("output_index", "/Users/ali/workspace/data/bluge/index/99p/", "where to write the data")
+	var inputJson = flag.String("input_json", "", "where to load the data")
+	var outputIndex = flag.String("output_index", "", "where to write the index")
 	flag.Parse()
-	// Read data file
-	// datasetName := "20220301_en_1k"
-	// datasetName := "20220301_en_full"
-	// fname := "/Users/ali/workspace/data/wikipedia/" + datasetName + ".json"
-	// indexDir := "/Users/ali/workspace/data/bluge/index/"
-	// const keepIndex = true
-	var err error
-	// if keepIndex {
-	// 	indexDir = path.Join(indexDir, "keep", datasetName)
-	// 	err = os.MkdirAll(indexDir, 0750)
-	// } else {
-	// 	indexDir, err = os.MkdirTemp(indexDir, "wiki_"+datasetName+"_*")
-	// }
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
+
 	log.Println("input json file:", *inputJson)
 	readFile, err := os.Open(*inputJson)
 	if err != nil {
@@ -78,7 +52,6 @@ func main() {
 
 		data := fileScanner.Bytes()
 		inputDoc := &document.Document{}
-		// inputDoc.LshHash = dummyHash(rand.Uint64(), lshNumberOfBuckets)
 
 		json.Unmarshal(data, inputDoc)
 		text_embedding, err := json.Marshal(inputDoc.TextEmbedding)

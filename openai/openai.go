@@ -1,4 +1,4 @@
-package embeddings
+package openai
 
 import (
 	"bytes"
@@ -8,25 +8,27 @@ import (
 	"net/http"
 )
 
-type OpenAIClient struct {
+type client struct {
 	key      string
 	endpoint string
 	model    string
+	dim      int
 }
 
-func NewOpenAIClient(key string) *OpenAIClient {
-	return &OpenAIClient{
+func NewClient(key string) *Client {
+	return &client{
 		key:      key,
 		endpoint: "https://api.openai.com/v1/embeddings",
 		model:    "text-embedding-ada-002",
+		dim:      1536,
 	}
 }
 
-func (e *OpenAIClient) Get(input []string) ([]*vector.Vector32, error) {
-	embd, _, err := e.GetWithUsage(input)
+func (c *client) GetEmbeddings(input []string) ([]*vector.Vector32, error) {
+	embd, _, err := c.GetEmbeddingsWithCost(input)
 	return embd, err
 }
-func (e *OpenAIClient) GetWithUsage(input []string) ([]*vector.Vector32, int, error) {
+func (c *client) GetEmbeddingsWithCost(input []string) ([]*vector.Vector32, int, error) {
 
 	// Set the request body parameters
 	reqBody := struct {
@@ -34,17 +36,17 @@ func (e *OpenAIClient) GetWithUsage(input []string) ([]*vector.Vector32, int, er
 		Model string   `json:"model"`
 	}{
 		Input: input,
-		Model: e.model,
+		Model: c.model,
 	}
 	j, err := json.Marshal(reqBody)
 	if err != nil {
 		log.Fatalln(err)
 	}
-	req, err := http.NewRequest(http.MethodPost, e.endpoint, bytes.NewBuffer(j))
+	req, err := http.NewRequest(http.MethodPost, c.endpoint, bytes.NewBuffer(j))
 	if err != nil {
 		log.Fatalln(err)
 	}
-	req.Header.Set("Authorization", "Bearer "+e.key)
+	req.Header.Set("Authorization", "Bearer "+c.key)
 	req.Header.Set("Content-Type", "application/json")
 
 	client := &http.Client{}
@@ -90,4 +92,8 @@ func (e *OpenAIClient) GetWithUsage(input []string) ([]*vector.Vector32, int, er
 
 	}
 	return embeddings, resBody.Usage.TotalTokens, nil
+}
+
+func (c *client) EmbeddingDim() {
+	return c.dim
 }

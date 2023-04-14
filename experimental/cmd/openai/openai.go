@@ -5,18 +5,17 @@ import (
 	"encoding/json"
 	"flag"
 	"github/iampat/cloudy-neigh/document"
-	"github/iampat/cloudy-neigh/embeddings"
 	"github/iampat/cloudy-neigh/lsh"
+	"github/iampat/cloudy-neigh/openai"
 	"log"
 	"os"
 )
 
 const maxLineSize int = 1000 * 1000 // Reserve 1MB
 const batchSize = 200
-const embeddingDim = 1536
+
 const costDollarPerTocken = float64(0.0004 / 1000.0)
 const maxOpenAiTextLength = 10 * 1000
-const lshSize = 10
 
 func writeDocsToJson(batch []*document.Document, encoder *json.Encoder) {
 	for _, d := range batch {
@@ -25,7 +24,7 @@ func writeDocsToJson(batch []*document.Document, encoder *json.Encoder) {
 		}
 	}
 }
-func hydraiteBatch(batch []*document.Document, client *embeddings.OpenAIClient, lsh *lsh.Lsh) int {
+func hydraiteBatch(batch []*document.Document, client openai.Embedder, lsh *lsh.Lsh) int {
 	titles := []string{}
 	contents := []string{}
 	for _, doc := range batch {
@@ -40,12 +39,11 @@ func hydraiteBatch(batch []*document.Document, client *embeddings.OpenAIClient, 
 		}
 		contents = append(contents, c)
 	}
-
-	contentEmbeddings, cost1, err := client.GetWithUsage(contents)
+	contentEmbeddings, cost1, err := client.GetEmbeddingsWithCost(contents)
 	if err != nil {
 		log.Fatalln("content embedding", err)
 	}
-	titleEmbeddings, cost2, err := client.GetWithUsage(titles)
+	titleEmbeddings, cost2, err := client.GetEmbeddingsWithCost(titles)
 	if err != nil {
 		log.Fatalln("title embedding", err)
 	}
@@ -60,11 +58,12 @@ func hydraiteBatch(batch []*document.Document, client *embeddings.OpenAIClient, 
 }
 
 func main() {
-	var inputJson = flag.String("input_json", "/Users/ali/src/misc/dash_answering/notebooks/data/99p/dataset.json", "where to load the data")
-	var outputJson = flag.String("output_json", "/Users/ali/src/misc/dash_answering/notebooks/data/99p/dataset_embedding.json", "where to write the data")
+	var inputJson = flag.String("input_json", "", "where to load the data")
+	var outputJson = flag.String("output_json", "", "where to write the data after adding the index")
+	var lshSize = flag.Int("lsh_size", 10, "Size of the LSH")
 	flag.Parse()
-	client := embeddings.NewOpenAIClient(os.Getenv("OPENAI_API_KEY"))
-	lsh := lsh.NewLSH42(lshSize, embeddingDim)
+	client := openai.NewClient(os.Getenv("OPENAI_API_KEY"))
+	lsh := lsh.NewLSH42(*lshSize, client.EmbeddingDim())
 
 	log.Println("input json file:", *inputJson)
 	readFile, err := os.Open(*inputJson)
