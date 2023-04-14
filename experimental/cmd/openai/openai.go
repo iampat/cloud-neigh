@@ -40,11 +40,11 @@ func hydraiteBatch(batch []*document.Document, client openai.Embedder, lsh *lsh.
 		}
 		contents = append(contents, c)
 	}
-	contentEmbeddings, cost1, err := client.GetEmbeddingsWithCost(contents)
+	contentEmbeddings, cost1, err := client.EmbeddingsWithCost(contents)
 	if err != nil {
 		log.Fatalln("content embedding", err)
 	}
-	titleEmbeddings, cost2, err := client.GetEmbeddingsWithCost(titles)
+	titleEmbeddings, cost2, err := client.EmbeddingsWithCost(titles)
 	if err != nil {
 		log.Fatalln("title embedding", err)
 	}

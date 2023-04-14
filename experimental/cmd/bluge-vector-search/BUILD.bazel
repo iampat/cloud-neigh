@@ -3,7 +3,7 @@ load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
 go_library(
     name = "bluge-vector-search_lib",
     srcs = ["bluge-vector-search.go"],
-    importpath = "https:/github.com/iampat/cloudy-neigh/experimental/cmd/bluge-vector-search",
+    importpath = "github.com/iampat/cloudy-neigh/experimental/cmd/bluge-vector-search",
     visibility = ["//visibility:private"],
     deps = ["@com_github_blugelabs_bluge//:go_default_library"],
 )

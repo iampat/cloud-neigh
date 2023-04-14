@@ -1,6 +1,6 @@
 load("@bazel_gazelle//:def.bzl", "gazelle")
 
-# gazelle:prefix https://github.com/iampat/cloudy-neigh
+# gazelle:prefix github.com/iampat/cloudy-neigh
 gazelle(name = "gazelle")
 
 load("@com_github_bazelbuild_buildtools//buildifier:def.bzl", "buildifier")

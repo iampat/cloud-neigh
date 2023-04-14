@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/iampat/cloudy-neigh/lsh"
+	"github.com/iampat/cloudy-neigh/openai"
 
 	"github.com/blugelabs/bluge"
 	"github.com/fatih/color"
@@ -93,9 +94,9 @@ func RunVectorSearch(query string, indexReader *bluge.Reader) {
 		fmt.Println()
 	}(&tStart, &tEmbeddingDone)
 	fmt.Println(green("------------------------- Vector Search Started ---------------------------"))
-	client := embeddings.NewOpenAIClient(os.Getenv("OPENAI_API_KEY"))
+	client := openai.NewClient(os.Getenv("OPENAI_API_KEY"))
 	lsh := lsh.NewLSH42(lshSize, embeddingDim)
-	embd, err := client.Get([]string{query})
+	embd, err := client.Embeddings([]string{query})
 	tEmbeddingDone = time.Now()
 	if err != nil {
 		log.Fatalln("ERROR in calling Open AI API", err)

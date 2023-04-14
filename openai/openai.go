@@ -16,7 +16,7 @@ type client struct {
 	dim      int
 }
 
-func NewClient(key string) *Client {
+func NewClient(key string) *client {
 	return &client{
 		key:      key,
 		endpoint: "https://api.openai.com/v1/embeddings",
@@ -25,11 +25,11 @@ func NewClient(key string) *Client {
 	}
 }
 
-func (c *client) GetEmbeddings(input []string) ([]*vector.Vector32, error) {
-	embd, _, err := c.GetEmbeddingsWithCost(input)
+func (c *client) Embeddings(input []string) ([]*vector.Vector32, error) {
+	embd, _, err := c.EmbeddingsWithCost(input)
 	return embd, err
 }
-func (c *client) GetEmbeddingsWithCost(input []string) ([]*vector.Vector32, int, error) {
+func (c *client) EmbeddingsWithCost(input []string) ([]*vector.Vector32, int, error) {
 
 	// Set the request body parameters
 	reqBody := struct {
@@ -95,6 +95,6 @@ func (c *client) GetEmbeddingsWithCost(input []string) ([]*vector.Vector32, int,
 	return embeddings, resBody.Usage.TotalTokens, nil
 }
 
-func (c *client) EmbeddingDim() {
+func (c *client) EmbeddingDim() int {
 	return c.dim
 }
