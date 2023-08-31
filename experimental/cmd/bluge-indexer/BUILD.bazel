@@ -7,7 +7,7 @@ go_library(
     visibility = ["//visibility:private"],
     deps = [
         "//document",
-        "@com_github_blugelabs_bluge//:go_default_library",
+        "@com_github_blugelabs_bluge//:bluge",
     ],
 )
 
