@@ -5,7 +5,7 @@ go_library(
     srcs = ["bluge-vector-search.go"],
     importpath = "github.com/iampat/cloudy-neigh/experimental/cmd/bluge-vector-search",
     visibility = ["//visibility:private"],
-    deps = ["@com_github_blugelabs_bluge//:go_default_library"],
+    deps = ["@com_github_blugelabs_bluge//:bluge"],
 )
 
 go_binary(

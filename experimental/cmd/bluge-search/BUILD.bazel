@@ -8,8 +8,8 @@ go_library(
     deps = [
         "//lsh",
         "//openai",
-        "@com_github_blugelabs_bluge//:go_default_library",
-        "@com_github_fatih_color//:go_default_library",
+        "@com_github_blugelabs_bluge//:bluge",
+        "@com_github_fatih_color//:color",
     ],
 )
 
